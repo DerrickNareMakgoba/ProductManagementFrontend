@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../core/services/api.service';
 import { BehaviorSubject } from 'rxjs';
-import { IPagedResult, IProduct } from '../interfaces/Product/product';
+import { IAddProduct, IPagedResult, IProduct } from '../interfaces/Product/product';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +27,43 @@ export class ProductStore {
         console.log('error : ', err)
       }
     })
+  }
+
+  AddProduct(product: IAddProduct): void {
+    this._apiService.post<IProduct>('Product', product).subscribe({
+      next: (created) => {
+
+        const current = this.products$.value;
+
+        const updated = {
+          ...current,
+          items: [created, ...current.items]
+        };
+
+        this.products$.next(updated);
+      },
+      error: (err) => {
+        console.log('add product error:', err);
+      }
+    });
+  }
+
+  deleteProduct(id: number): void {
+    this._apiService.delete(`Product/${id}`).subscribe({
+      next: () => {
+
+        const current = this.products$.value;
+
+        const updated: IPagedResult<IProduct> = {
+          ...current,
+          items: current.items.filter(p => p.id !== id)
+        };
+
+        this.products$.next(updated);
+      },
+      error: (err) => {
+        console.log('delete error:', err);
+      }
+    });
   }
 }
