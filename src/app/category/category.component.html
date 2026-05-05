@@ -1,1 +1,24 @@
-<p>category works!</p>
+
+
+<button class="btn" routerLink="/add-category">
+  Add Category
+</button>
+
+<div class="product-grid">
+
+
+  <div class="product-card" *ngFor="let category of (this.categoryStore.categories$ | async)">
+
+    <h3>{{ category.name }}</h3>
+
+    <p>{{ category.description }}</p>
+
+
+
+    <div class="button-row">
+        <button class="btn view-btn">View</button>
+        <button class="btn delete-btn" style="background-color: red;">Delete</button>
+    </div>
+
+  </div>
+</div>

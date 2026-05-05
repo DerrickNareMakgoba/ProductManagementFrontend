@@ -1,0 +1,22 @@
+
+<form [formGroup]="categoryForm" (ngSubmit)="submit()">
+
+  <div>
+    <label>Name</label>
+    <input type="text" formControlName="name" placeholder="Enter product name" />
+    <small *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched">
+      Name is required
+    </small>
+  </div>
+
+  <div>
+    <label>Description</label>
+    <input type="text" formControlName="description" placeholder="Enter description" />
+  </div>
+
+
+  <button type="submit" [disabled]="categoryForm.invalid">
+    Add Category
+  </button>
+
+</form>

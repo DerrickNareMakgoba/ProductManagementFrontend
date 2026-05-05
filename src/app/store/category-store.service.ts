@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../core/services/api.service';
-import { ICategory } from '../interfaces/category';
+import { IAddCategory, ICategory } from '../interfaces/category';
 import { BehaviorSubject } from 'rxjs';
 
 
@@ -22,6 +22,25 @@ export class CategoryStore {
             },
             error: (err) => {
                 console.log(err);
+            }
+        })
+    }
+
+
+    AddCategory(body :IAddCategory): void {
+        this._apiService.post<ICategory>('category', body).subscribe({
+            next: (created) => {
+                const current = this.categories$.value;
+
+                const updated = {
+                ...current,
+                items: [created, ...current]
+                };
+
+                this.categories$.next(updated);
+            },
+            error: (err) =>{
+                console.log('err');
             }
         })
     }

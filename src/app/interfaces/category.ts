@@ -5,3 +5,9 @@ export interface ICategory {
   active: boolean;
   deleted: boolean;
 }
+
+export interface IAddCategory {
+  name: string;
+  description: string;
+  parentCategoryId: number;
+}
