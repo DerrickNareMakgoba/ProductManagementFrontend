@@ -15,16 +15,28 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.productStore.GetAllProducts();
+
+    this.productStore.hasError$.subscribe((result) => {
+      if (result) {
+        alert('unable to retrive products');
+      }
+    });
   }
 
   onSearch(event: any): void {
     const searchTerm = event.target.value;
 
-    this.productStore.GetAllProducts(1, 3, searchTerm);
+    this.productStore.GetAllProducts(1, this.productStore.products$.value.totalCount, searchTerm);
   }
 
   onDelete(id: number) {
     this.productStore.deleteProduct(id);
+
+    this.productStore.hasError$.subscribe((result) => {
+      if (result) {
+        alert('unable to delete product');
+      }
+    });
   }
 
   nextPage() {
@@ -33,6 +45,7 @@ export class ProductComponent implements OnInit {
 
   prevPage() {
     this.productStore.GetAllProducts(--this.pageNumber, this.pageSize);
+
   }
 
 }

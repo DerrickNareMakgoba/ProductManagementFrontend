@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../core/services/api.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { IAddProduct, IPagedResult, IProduct } from '../interfaces/Product/product';
 
 @Injectable({
@@ -20,6 +20,13 @@ export class ProductStore {
   private readonly _loading$ = new BehaviorSubject<boolean>(false);
   readonly loading$ = this._loading$.asObservable();
 
+  private readonly _error$ = new BehaviorSubject<string | null>(null);
+  readonly error$ = this._error$.asObservable();
+
+  readonly hasError$ = this._error$.pipe(
+    map(err => !!err)
+  );
+
   GetAllProducts(pageNumber = 1, pageSize = 3, search = '') : void {
     this._loading$.next(true);
     this._apiService.get<IPagedResult<IProduct>>(`Product/all-paged?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`).subscribe({
@@ -28,7 +35,7 @@ export class ProductStore {
         this._loading$.next(false);
       },
       error: (err) => {
-        console.log('error : ', err)
+        this._error$.next(err)
         this._loading$.next(false);
       }
     })
@@ -50,7 +57,7 @@ export class ProductStore {
         this._loading$.next(false);
       },
       error: (err) => {
-        console.log('add product error:', err);
+        this._error$.next(err)
         this._loading$.next(false);
       }
     });
@@ -72,7 +79,7 @@ export class ProductStore {
         this._loading$.next(false);
       },
       error: (err) => {
-        console.log('delete error:', err);
+        this._error$.next(err)
         this._loading$.next(false);
       }
     });
