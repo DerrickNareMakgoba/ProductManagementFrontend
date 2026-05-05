@@ -1,16 +1,28 @@
 
 
 <div class="search-container">
-  <input
+    <input
     type="text"
-    placeholder="Search products..."
-    (input)="onSearch($event)"
-  />
-</div>
+    [formControl]="searchControl"
+    placeholder="Search products"
+    />
+</div> <br />
 
 <button class="btn" routerLink="/add-product">
   Add Product
 </button>
+
+<select [formControl]="categoryControl">
+
+  <option [ngValue]="null">-- All Categories --</option>
+
+  <option
+    *ngFor="let category of (categoryStore.categories$ | async)"
+    [ngValue]="category.id">
+    {{ category.name }}
+  </option>
+
+</select>
 
 <div *ngIf="productStore.loading$ | async" class="loading" style="padding: 15px;font-weight: bold;">
   Loading products...

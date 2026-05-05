@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../core/services/api.service';
 import { BehaviorSubject, map } from 'rxjs';
 import { IAddProduct, IPagedResult, IProduct } from '../interfaces/Product/product';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +28,31 @@ export class ProductStore {
     map(err => !!err)
   );
 
-  GetAllProducts(pageNumber = 1, pageSize = 3, search = '') : void {
+  GetAllProducts(categoryId: number | null, pageNumber = 1, pageSize = 3, search = '') : void {
+
+    let params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+
+    if (search?.trim()) {
+      params = params.set('search', search);
+    }
+
+    if (categoryId != null) {
+      params = params.set('categoryId', categoryId.toString());
+    }
+
+    console.log(params.toString());
+    
     this._loading$.next(true);
-    this._apiService.get<IPagedResult<IProduct>>(`Product/all-paged?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`).subscribe({
+    this._apiService.get<IPagedResult<IProduct>>('Product/all-paged', 
+    {
+        pageNumber,
+        pageSize,
+        search: search?.trim() || null,
+        categoryId
+    }
+).subscribe({
       next: (response) => {
         this.products$.next(response);
         this._loading$.next(false);

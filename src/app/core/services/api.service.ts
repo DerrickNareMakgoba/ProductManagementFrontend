@@ -18,12 +18,17 @@ export class ApiService {
     });
   }
 
-  get<T>(endpoint: string, params?: any): Observable<T> {
+  get<T>(endpoint: string, params?: Record<string, any>): Observable<T> {
+
     let httpParams = new HttpParams();
 
     if (params) {
-      Object.keys(params).forEach(key => {
-        httpParams = httpParams.append(key, params[key]);
+      Object.entries(params).forEach(([key, value]) => {
+
+        if (value !== null && value !== undefined) {
+          httpParams = httpParams.set(key, String(value));
+        }
+
       });
     }
 
