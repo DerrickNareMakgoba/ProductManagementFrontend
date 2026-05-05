@@ -13,11 +13,11 @@ export class ProductStore {
   readonly products$ = new BehaviorSubject<IPagedResult<IProduct>>({
     items: [],
     pageNumber : 1,
-    pageSize: 10,
+    pageSize: 3,
     totalCount: 0
   });
 
-  GetAllProducts(pageNumber = 1, pageSize = 10, search = '') : void {
+  GetAllProducts(pageNumber = 1, pageSize = 3, search = '') : void {
     this._apiService.get<IPagedResult<IProduct>>(`Product/all-paged?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`).subscribe({
       next: (response) => {
         console.log('response : ', response)

@@ -1,38 +1,72 @@
-
 <div class="search-container">
-    <input
-        type="text"
-        placeholder="Search products..."
-        (input)="onSearch($event)"
-    />
+  <input
+    type="text"
+    placeholder="Search products..."
+    (input)="onSearch($event)"
+  />
 </div>
 
 <button class="btn" routerLink="/add-product">
   Add Product
 </button>
 
-<div class="product-grid">
+<table class="product-table">
 
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>SKU</th>
+      <th>Quantity</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
 
-  <div class="product-card" *ngFor="let product of (this.productStore.products$ | async)?.items">
+  <tbody>
+    <tr *ngFor="let product of (productStore.products$ | async)?.items">
 
-    <h3>{{ product.name }}</h3>
+      <td>{{ product.name }}</td>
 
-    <p>{{ product.description }}</p>
+      <td>{{ product.description }}</td>
 
-    <div class="price">
-      R{{ product.price }}
-    </div>
+      <td>R{{ product.price }}</td>
 
-    <div class="meta">
-      <small>SKU: {{ product.sku || 'N/A' }}</small>
-      <small>Qty: {{ product.quantity }}</small>
-    </div>
+      <td>{{ product.sku || 'N/A' }}</td>
 
-    <div class="button-row">
-        <button class="btn view-btn">View</button>
-        <button class="btn delete-btn" style="background-color: red;" (click)="onDelete(product.id)">Delete</button>
-    </div>
+      <td>{{ product.quantity }}</td>
 
-  </div>
+      <td>
+        <div class="button-row">
+          <button class="btn view-btn">View</button>
+
+          <button
+            class="btn delete-btn"
+            (click)="onDelete(product.id)">
+            Delete
+          </button>
+        </div>
+      </td>
+
+    </tr>
+  </tbody>
+
+</table>
+
+<div class="pagination">
+
+  <button (click)="prevPage()" [disabled]="(productStore.products$ | async)?.pageNumber === 1">
+    Previous
+  </button>
+
+  <span>
+    Page {{ (productStore.products$ | async)?.pageNumber }} of {{ (productStore.products$ | async)?.totalCount }}
+  </span>
+
+  <button (click)="nextPage()" [disabled]="((productStore.products$ | async)?.pageNumber ?? 1) * 
+            ((productStore.products$ | async)?.pageSize ?? 10) >= 
+            ((productStore.products$ | async)?.totalCount ?? 0)">
+    Next
+  </button>
+
 </div>
