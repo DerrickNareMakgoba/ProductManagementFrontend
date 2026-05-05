@@ -12,20 +12,19 @@ export class ProductComponent implements OnInit {
   readonly productStore = inject(ProductStore);
   private pageNumber = 1;
   private pageSize = 3;
-  
 
 
   ngOnInit(): void {
     this.productStore.GetAllProducts();
 
     this.productStore.hasError$
-    .pipe(distinctUntilChanged(),
-      filter(Boolean))
-    .subscribe((result) => {
-      if (result) {
-        alert('unable to retrive products');
-      }
-    });
+      .pipe(distinctUntilChanged(),
+        filter(Boolean))
+      .subscribe((result) => {
+        if (result) {
+          alert('unable to retrive products');
+        }
+      });
   }
 
   onSearch(event: any): void {
@@ -36,12 +35,6 @@ export class ProductComponent implements OnInit {
 
   onDelete(id: number) {
     this.productStore.deleteProduct(id);
-
-    this.productStore.hasError$.subscribe((result) => {
-      if (result) {
-        alert('unable to delete product');
-      }
-    });
   }
 
   nextPage() {
