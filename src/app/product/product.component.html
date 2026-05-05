@@ -1,3 +1,5 @@
+
+
 <div class="search-container">
   <input
     type="text"
@@ -10,7 +12,11 @@
   Add Product
 </button>
 
-<table class="product-table">
+<div *ngIf="productStore.loading$ | async" class="loading" style="padding: 15px;font-weight: bold;">
+  Loading products...
+</div>
+
+<table class="product-table" *ngIf="!(productStore.loading$ | async)">
 
   <thead>
     <tr>
@@ -53,7 +59,7 @@
 
 </table>
 
-<div class="pagination">
+<div class="pagination" *ngIf="!(productStore.loading$ | async)">
 
   <button (click)="prevPage()" [disabled]="(productStore.products$ | async)?.pageNumber === 1">
     Previous

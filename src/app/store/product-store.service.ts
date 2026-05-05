@@ -17,19 +17,25 @@ export class ProductStore {
     totalCount: 0
   });
 
+  private readonly _loading$ = new BehaviorSubject<boolean>(false);
+  readonly loading$ = this._loading$.asObservable();
+
   GetAllProducts(pageNumber = 1, pageSize = 3, search = '') : void {
+    this._loading$.next(true);
     this._apiService.get<IPagedResult<IProduct>>(`Product/all-paged?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`).subscribe({
       next: (response) => {
-        console.log('response : ', response)
         this.products$.next(response);
+        this._loading$.next(false);
       },
       error: (err) => {
         console.log('error : ', err)
+        this._loading$.next(false);
       }
     })
   }
 
   AddProduct(product: IAddProduct): void {
+    this._loading$.next(true);
     this._apiService.post<IProduct>('Product', product).subscribe({
       next: (created) => {
 
@@ -41,14 +47,17 @@ export class ProductStore {
         };
 
         this.products$.next(updated);
+        this._loading$.next(false);
       },
       error: (err) => {
         console.log('add product error:', err);
+        this._loading$.next(false);
       }
     });
   }
 
   deleteProduct(id: number): void {
+    this._loading$.next(true);
     this._apiService.delete(`Product/${id}`).subscribe({
       next: () => {
 
@@ -60,9 +69,11 @@ export class ProductStore {
         };
 
         this.products$.next(updated);
+        this._loading$.next(false);
       },
       error: (err) => {
         console.log('delete error:', err);
+        this._loading$.next(false);
       }
     });
   }

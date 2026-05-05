@@ -20,7 +20,7 @@ export class ProductComponent implements OnInit {
   onSearch(event: any): void {
     const searchTerm = event.target.value;
 
-    this.productStore.GetAllProducts(1, 10, searchTerm);
+    this.productStore.GetAllProducts(1, 3, searchTerm);
   }
 
   onDelete(id: number) {
