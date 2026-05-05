@@ -1,0 +1,55 @@
+
+<form [formGroup]="productForm" (ngSubmit)="submit()">
+
+  <div>
+    <label>Name</label>
+    <input type="text" formControlName="name" placeholder="Enter product name" />
+    <small *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+      Name is required
+    </small>
+  </div>
+
+  <div>
+    <label>Description</label>
+    <input type="text" formControlName="description" placeholder="Enter description" />
+  </div>
+
+  <div>
+    <label>Price</label>
+    <input type="number" formControlName="price" placeholder="Enter price" />
+    <small *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+      Price is required
+    </small>
+  </div>
+
+  <div>
+    <label>Quantity</label>
+    <input type="number" formControlName="quantity" placeholder="Enter quantity" />
+  </div>
+
+  <div>
+    <label>SKU</label>
+    <input type="text" formControlName="sku" placeholder="Enter SKU" />
+  </div>
+
+    <div>
+    <label>Category</label>
+
+    <select formControlName="categoryId">
+
+        <option value="">-- Select Category --</option>
+
+        <option *ngFor="let category of (categoryStore.categories$ | async)" 
+                [value]="category.id">
+        {{ category.name }}
+        </option>
+
+    </select>
+
+    </div>
+
+  <button type="submit" [disabled]="productForm.invalid">
+    Add Product
+  </button>
+
+</form>

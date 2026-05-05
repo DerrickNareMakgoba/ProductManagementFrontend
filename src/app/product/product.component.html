@@ -7,6 +7,10 @@
     />
 </div>
 
+<button class="btn" routerLink="/add-product">
+  Add Product
+</button>
+
 <div class="product-grid">
 
 
@@ -27,7 +31,7 @@
 
     <div class="button-row">
         <button class="btn view-btn">View</button>
-        <button class="btn delete-btn" style="background-color: red;">Delete</button>
+        <button class="btn delete-btn" style="background-color: red;" (click)="onDelete(product.id)">Delete</button>
     </div>
 
   </div>

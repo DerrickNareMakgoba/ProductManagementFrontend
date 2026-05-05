@@ -33,4 +33,22 @@ export class ApiService {
     });
   }
 
+  post<T>(endpoint: string, body: any): Observable<T> {
+    return this._http.post<T>(`${this.baseUrl}/${endpoint}`, body, {
+      headers: this.getHeaders()
+    });
+  }
+
+  put<T>(endpoint: string, body: any): Observable<T> {
+    return this._http.put<T>(`${this.baseUrl}/${endpoint}`, body, {
+      headers: this.getHeaders()
+    });
+  }
+
+  delete<T>(endpoint: string): Observable<T> {
+    return this._http.delete<T>(`${this.baseUrl}/${endpoint}`, {
+      headers: this.getHeaders()
+    });
+  }
+
 }

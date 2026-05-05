@@ -10,6 +10,7 @@ export class ProductComponent implements OnInit {
 
   readonly productStore = inject(ProductStore);
 
+
   ngOnInit(): void {
     this.productStore.GetAllProducts();
   }
@@ -18,6 +19,10 @@ export class ProductComponent implements OnInit {
     const searchTerm = event.target.value;
 
     this.productStore.GetAllProducts(1, 10, searchTerm);
+  }
+
+  onDelete(id: number) {
+    this.productStore.deleteProduct(id);
   }
 
 }

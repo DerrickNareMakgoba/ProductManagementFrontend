@@ -18,3 +18,12 @@ export interface IProduct {
   active: boolean;
   deleted: boolean;
 }
+
+export interface IAddProduct {
+  name: string;
+  description: string;
+  price: number;
+  categoryId: number;
+  quantity: number;
+  sku: string;
+}
