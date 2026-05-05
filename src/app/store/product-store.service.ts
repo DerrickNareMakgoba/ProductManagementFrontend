@@ -10,18 +10,18 @@ export class ProductStore {
 
   private readonly _apiService = inject(ApiService);
 
-  private readonly _products$ = new BehaviorSubject<IPagedResult<IProduct>>({
+  readonly products$ = new BehaviorSubject<IPagedResult<IProduct>>({
     items: [],
     pageNumber : 1,
     pageSize: 10,
     totalCount: 0
   });
 
-  GetAllProducts() : void {
-    this._apiService.get<IPagedResult<IProduct>>('Product/all-paged?pageNumber=1&pageSize=10').subscribe({
+  GetAllProducts(pageNumber = 1, pageSize = 10, search = '') : void {
+    this._apiService.get<IPagedResult<IProduct>>(`Product/all-paged?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${search}`).subscribe({
       next: (response) => {
         console.log('response : ', response)
-        this._products$.next(response);
+        this.products$.next(response);
       },
       error: (err) => {
         console.log('error : ', err)

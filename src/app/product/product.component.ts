@@ -8,10 +8,16 @@ import { ProductStore } from '../store/product-store.service';
 })
 export class ProductComponent implements OnInit {
 
-  private readonly _productStore = inject(ProductStore);
+  readonly productStore = inject(ProductStore);
 
   ngOnInit(): void {
-    this._productStore.GetAllProducts();
+    this.productStore.GetAllProducts();
+  }
+
+  onSearch(event: any): void {
+    const searchTerm = event.target.value;
+
+    this.productStore.GetAllProducts(1, 10, searchTerm);
   }
 
 }
